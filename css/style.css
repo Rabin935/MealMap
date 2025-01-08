@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    border: border-box;
+}
+
+/* first header */
+header{
+    height: 8.4vw;
+    background-color: #bfbfbf;
+}
+.first-header{
+    height: 5.5vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.first-header h1{
+    font-size: 3vw;
+    color: #ff4704;
+    font-family:'Poppins',sans-serif;
+    font-weight: 700;
+}
+
+.search-bar{
+    height: 50px;
+    width: 50vw;
+    display: flex;
+    position: relative;
+    left: 9vw;
+    border: none;
+    align-items: center;
+}
+.input-class{
+    width: 90%;
+    height: 3vw;
+    border: none;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    font-size: 1.2vw;
+    padding-left: 1.4vw;
+}
+.icon-btn{
+    background-color: white;
+    border: none;
+    font-size: 1.4vw;
+    height: 2.8vw;
+    width: 2.8vw;
+    border-radius: 20px;
+}
+
+.login-btn{
+    
+    border: none;
+    height: 2.5vw;
+    width: 6.5vw;
+    background-color: #ff4704;
+    color: white;
+    font-weight: 700;
+    font-family: sans-serif;
+    border-radius: 20px;
+    margin-left: 8vw;
+    font-size: 1vw;
+}
+.search-iconn{
+    height: 3vw;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    font-size: 20px;
+}
+
+
+/* second header */
+
+.second-header{
+    height: 40px;
+    align-items: center;
+    
+}
+.second-header li{
+    display: flex;
+    margin-left: 11vw;
+}
+.second-header li a{
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    font-family: 'Poppins',sans-serif;
+    margin-left: 6vw;
+    font-size: 1.2vw;
+}
+.second-header li a::after{
+    color: #ff4704;
+    content: "";
+    position: absolute;
+    background-color: #ff4704;
+    height: 0.3vw;
+    width: 0;
+    left: 0;
+    bottom: -0.3vw;
+    transition: 0.3s;
+}
+.second-header li a:hover::after{
+    width: 100%;
+}
+#active{
+    color: #ff4704;
+}
+
+
+/* PANEL */
+.panel{
+    display: flex;
+    width: 92%;
+    height: 39vw;
+    /* background-color: #ff4704; */
+    margin-left: 4vw;
+}
+.panel-col1{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    /* background-color: blue; */
+    justify-content: center;
+}
+.panel-col1 h1{
+    margin-left: 9.5vw;
+    font-size: 3.8vw;
+    margin-bottom: 0.1vw;
+    font-family: "Poppins",serif;
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+.panel-col1 p{
+    font-size: 1.2vw;
+    color: #ff4704;
+    font-weight: 600;
+    margin-left: 9.5vw;
+    margin-bottom: 1vw;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.saved-recipe-btn{
+    margin-left: 9.5vw;
+    width: 10vw;
+    height: 2.4vw;
+    font-size: 1vw;
+    border-radius: 25px;
+    background-color:#ff4704;
+    font-family: "Poppins",sans-serif;
+    font-weight: 600;
+    border: none;
+    color: white;
+}
+.panel-col2{
+    width: 50%;
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.panel-col2 img{
+    height: 100%;
+}
+
+/* SECOND BODY */
+.home-image2{
+    width: 100%;
+    height: 45vw;
+    background-image: url(../images/home_image3.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(5, 0, 0, 0.2);
+}
+.overlay {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    pointer-events: none; 
+}
+.home-image2-line{
+    color: white;
+    font-size: 3vw;
+    font-weight: 600;
+    position: relative;
+    top: 50%;
+    text-align: center;
+
+}
+
+/* R-E-C-I-P-E-S */
+.popu-recipe-title{
+    text-align: center;
+    margin: 2vw 0;
+    font-weight: 700;
+    font-size: 2.2vw;
+}
+.popular-recipes{
+    width: 75%;
+    margin-left: 13vw;
+    height: auto;
+    /* background-color: red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}   
+.recipe{
+   margin-bottom: 2vw;
+}
+.recipe-img{
+    height: 20vw;
+    width: 23vw;
+    border: none;
+    border-radius: 10px;
+}
+.recipe h2{
+   color:#595959;
+   letter-spacing: 0.1vw;
+   font-weight: 700;
+   font-size: 1.1vw;
+   font-family: "Poppins",sans-serif;
+}
+.recipe-anchor{
+    text-decoration: none;
+    font-size: 1.2vw;
+    font-family: "Poppins", serif;
+    font-weight: 700;
+    font-style: normal;
+    color: black;
+    letter-spacing: 0.07vw;
+}
+.recipe-anchor:hover{
+    border-bottom: 2px solid black;
+}
+
+
+/* T-H-I-R-D  B-O-D-Y  */
+.vegetables-image{
+    height: 30vw;
+    background-color: rebeccapurple;
+    width: 100% ;
+    background-image: url(../images/home-image.jpg);
+    background-size: cover;
+    background-position: center;
+}
+.overlay-2{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    pointer-events: none; 
+}
+.overlay-2 p{
+    color: white;
+    text-align: center;
+    position: relative;
+    top: 45%;
+    font-size: 2.5vw;
+    font-weight: 600;
+}
+.top-25-veg-recipe-line{
+    text-align: center;
+    font-size: 2vw;
+}
+.vegetables-recipe-details{
+    width: 75%;
+    margin-left: 13vw;
+    height: 30vw;
+    /* background-color: red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.veg-recipe{
+    display: flex;
+    width: 100%;
+    height: 26vw;
+    border-bottom: 0.1vw solid #595959;
+}
+.veg-detail-col1{
+    height: 20vw;
+    width: 30%;
+    /* background-color: hotpink; */
+    margin-top: 3vw;
+}
+.veg-detail-col1 img{
+    height: 100%;
+    width: 100%;
+}
+.veg-detail-col2{
+   margin-left: 2vw;
+   margin-top: 3vw;
+   width: 67%;
+   height: 20vw;
+   /* background-color: #ff4704; */
+}
+.veg-detail-col2 h1{
+    color:#595959;
+    letter-spacing: 0.1vw;
+    font-weight: 700;
+    font-size: 1.1vw;
+    font-family: "Poppins",sans-serif;                                                                                                                  
+}
+.veg-detail-col2 a{
+    text-decoration: none;
+    font-size: 1.2vw;
+    font-family: "Poppins", serif;
+    font-weight: 700;
+    font-style: normal;
+    color: black;
+    letter-spacing: 0.07vw;
+}
+.veg-recipe .anchor:hover{
+    border-bottom: 0.1vw solid black;
+}
+
+/* T-A-B-L-E */
+
+.border-box{
+    width: 50%;
+    height: 0.3vw;
+    margin-top: 0.5vw;
+    background-color: #E7AB46;
+    border-top-right-radius: 0.5vw;
+    border-top-left-radius: 0.5vw;
+}
+.cooking-time{
+    height: 12vw;
+    width: 50%;
+    border: none;
+    border-bottom: 0.1vw solid #2c3e50;
+    border-right: 0.1vw solid #2c3e50; 
+    border-left: 0.1vw solid #2c3e50; 
+}
+.prep-time{
+    height: 6vw;
+    width: 12vw;
+    /* background-color: #D54215; */
+}
+.prep-time h4{
+    font-size: 1.1vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1vw;
+    margin-top: 2vw;
+}
+.cooking-time{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.prep-time p{
+    font-family: "Poppins",sans-serif;
+    font-size: 1vw;
+    letter-spacing: 0.1vw;
+}
+
+
+.view-btn{
+    width: 9vw;
+    height: 2.5vw;
+    background-color: #D54215;
+    border: none;
+    font-size: 0.8vw;
+    color: whitesmoke;
+    font-weight: 700;
+    font-family: "Poppins",sans-serif;
+    letter-spacing: 0.1vw;
+    margin-top: 0.6vw;
+    border-radius: 0vw;
+}
+.view-btn:hover{
+    background-color: rgb(255, 111, 0);
+    color: white;
+}
