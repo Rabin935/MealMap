@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    border: border-box;
+}
+
+/* first header */
+header{
+    height: 8.4vw;
+    background-color: #bfbfbf;
+}
+.first-header{
+    height: 5.5vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.first-header h1{
+    font-size: 3vw;
+    color: #ff4704;
+    font-family:'Poppins',sans-serif;
+    font-weight: 700;
+}
+
+.search-bar{
+    height: 50px;
+    width: 50vw;
+    display: flex;
+    position: relative;
+    left: 9vw;
+    border: none;
+    align-items: center;
+}
+.input-class{
+    width: 90%;
+    height: 3vw;
+    border: none;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    font-size: 1.2vw;
+    padding-left: 1.4vw;
+}
+.icon-btn{
+    background-color: white;
+    border: none;
+    font-size: 1.4vw;
+    height: 2.8vw;
+    width: 2.8vw;
+    border-radius: 20px;
+}
+
+.login-btn{
+    
+    border: none;
+    height: 2.5vw;
+    width: 6.5vw;
+    background-color: #ff4704;
+    color: white;
+    font-weight: 700;
+    font-family: sans-serif;
+    border-radius: 20px;
+    margin-left: 8vw;
+    font-size: 1vw;
+}
+.search-iconn{
+    height: 3vw;
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    font-size: 20px;
+}
+
+
+/* second header */
+
+.second-header{
+    height: 40px;
+    align-items: center;
+    
+}
+.second-header li{
+    display: flex;
+    margin-left: 11vw;
+}
+.second-header li a{
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+    font-family: 'Poppins',sans-serif;
+    margin-left: 6vw;
+    font-size: 1.2vw;
+}
+.second-header li a::after{
+    color: #ff4704;
+    content: "";
+    position: absolute;
+    background-color: #ff4704;
+    height: 0.3vw;
+    width: 0;
+    left: 0;
+    bottom: -0.3vw;
+    transition: 0.3s;
+}
+.second-header li a:hover::after{
+    width: 100%;
+}
+#active{
+    color: #ff4704;
+}
+
+
+/* MAIN BODY */
+.recipe-details{
+    /* background-color: red;   */
+    width: 70%;
+    height: auto;
+    margin-left: 15vw;
+    margin-top: 4vw;
+}
+.recipe-name-details{
+    width: 100%;
+    height: auto;
+    /* background-color: aqua; */
+}
+.recipe-name-details h1{
+    font-family: 'Verdana', sans-serif;
+    font-size: 2.5vw;
+    font-weight: 700;
+    letter-spacing: 0.1vw; 
+    color: #2c3e50; 
+    margin-bottom: 2vw;
+}
+.recipe-name-details p{
+    font-family: "Poppins", sans-serif;
+    font-size: 1.5vw; 
+    font-weight: 600; 
+    color: #333; 
+    line-height: 1.2; 
+    letter-spacing: 0.1vw; 
+    margin-bottom: 1vw;
+}
+.recipe-pic img{
+    height: 30vw;
+    width: 30vw;
+}
+.recipe-rating{
+    height: auto;
+    width: auto;
+    display: flex;
+    margin-bottom: 2vw;
+}
+.save-recipe-btn{
+    width: 7vw;
+    height: 3.5vw;
+    background-color: #D54215;
+    border: none;
+    font-size: 1vw;
+    color: whitesmoke;
+    font-weight: 500;
+    font-family: "Poppins",sans-serif;
+    border-top-left-radius: 0.3vw;
+    border-bottom-left-radius: 0.3vw;
+    letter-spacing: 0.1vw;
+}
+.save-recipe-btn:hover{
+    border-bottom: 0.2vw solid #D54215;
+}
+.rate-btn{
+    border: none;
+    width: 7vw;
+    height: 3.5vw;
+    font-size: 1vw;
+    background-color: #F5F6EA;
+    color: black;
+    font-weight: 500;
+    font-family: "Poppins",sans-serif;
+    border-right: 0.1vw solid #bfbfbf;
+    border-left: 0.1vw solid #bfbfbf;
+    letter-spacing: 0.1vw;
+}
+.rate-btn:hover{
+    border-bottom: 0.2vw solid #D54215;
+}
+.rate-btn i{
+    color: #D54215;
+}
+.share-btn{
+    background-color: #F5F6EA;
+    border: none;
+    width: 7vw;
+    height: 3.5vw;
+    font-size: 1vw;
+    color: black;
+    font-weight: 500;
+    font-family: "Poppins",sans-serif;
+    letter-spacing: 0.1vw;
+    border-top-right-radius: 0.3vw;
+    border-bottom-right-radius: 0.3vw;
+}
+.share-btn:hover{
+    border-bottom: 0.2vw solid #D54215;
+}
+.share-btn i{
+    color: #D54215;
+}
+.recipe-pic{
+    /* margin-left: 20vw; */
+    margin-bottom: 2vw;
+}
+.border-box{
+    width: 60%;
+    height: 1vw;
+    background-color: #E7AB46;
+    border-top-right-radius: 0.5vw;
+    border-top-left-radius: 0.5vw;
+}
+.cooking-time{
+    height: 15vw;
+    width: 60%;
+    border: none;
+    border-bottom: 0.1vw solid #2c3e50;
+    border-right: 0.1vw solid #2c3e50; 
+    border-left: 0.1vw solid #2c3e50; 
+}
+.prep-time{
+    height: 6vw;
+    width: 15vw;
+    /* background-color: #D54215; */
+}
+.prep-time h4{
+    font-size: 1.3vw;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1vw;
+    margin-top: 2vw;
+}
+.cooking-time{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.prep-time p{
+    font-family: "Poppins",sans-serif;
+    font-size: 1vw;
+    letter-spacing: 0.1vw;
+}
