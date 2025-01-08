@@ -17,19 +17,18 @@
 
 /* first header */
 header{
-    height: 120px;
-    background-color: #bfbfbf;
+    height: 7vw;
+    background-color: white;
+    border-bottom: 0.15vw solid #bfbfbf;
 }
 .first-header{
-    height: 80px;
+    height: 3.5vw;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 .first-header h1{
-    position: absolute;
-    left: 80px;
-    font-size: 40px;
+    font-size: 2.5vw;
     color: #ff4704;
     font-family:'Poppins',sans-serif;
     font-weight: 700;
@@ -37,44 +36,54 @@ header{
 
 .search-bar{
     height: 50px;
-    width: 700px;
-    /* background-color: black; */
+    width: 50vw;
     display: flex;
     position: relative;
-    left: 200px;
+    left: 9vw;
     border: none;
-    
+    align-items: center;
 }
 .input-class{
+    border-right: none;
+    border-top: 0.1vw solid black;
+    border-left: 0.1vw solid black;
+    border-bottom: 0.1vw solid black;
     width: 90%;
-    height: 50px;
-    border: none;
+    height: 2.5vw;
+    /* border: none; */
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
-    font-size: 16px;
-    padding-left: 20px;
+    font-size: 1.2vw;
+    padding-left: 1.4vw;
 }
 .icon-btn{
+    /* border-right: 0.1vw solid black; */
     background-color: white;
     border: none;
-    font-size: 20px;
-    height: 40px;
-    width: 50px;
+    font-size: 1.4vw;
+    height: 2.5vw;
+    width: 2.8vw;
+    border-radius: 20px;
 }
+
 .login-btn{
-    width: 50px;
+    
     border: none;
-    height: 40px;
-    width: 90px;
+    height: 2vw;
+    width: 6.5vw;
     background-color: #ff4704;
     color: white;
     font-weight: 700;
     font-family: sans-serif;
     border-radius: 20px;
-    margin-left: 40px;
+    margin-left: 8vw;
+    font-size: 0.9vw;
 }
 .search-iconn{
-    height: 50px;
+    border-right: 0.1vw solid black;
+    border-top: 0.1vw solid black; 
+    border-bottom: 0.1vw solid black;
+    height: 2.5vw;
     width: 10%;
     display: flex;
     align-items: center;
@@ -85,17 +94,17 @@ header{
     font-size: 20px;
 }
 
+
 /* second header */
+
 .second-header{
     height: 40px;
     align-items: center;
-    
+    margin-top: 1vw;
 }
 .second-header li{
-    
     display: flex;
-    /* justify-content: space-evenly; */
-    padding-left: 135px;
+    margin-left: 11vw;
 }
 .second-header li a{
     position: relative;
@@ -103,30 +112,22 @@ header{
     color: black;
     font-weight: 500;
     font-family: 'Poppins',sans-serif;
-    margin-left: 80px;
-    /* padding-left: 45px; */
+    margin-left: 6vw;
+    font-size: 1vw;
 }
-
-.second-header li a:hover{
-    color: #ff4704;
-    transition: 0.2s;
-}
-
 .second-header li a::after{
     color: #ff4704;
     content: "";
     position: absolute;
     background-color: #ff4704;
-    height: 3px;
+    height: 0.2vw;
     width: 0;
     left: 0;
-    bottom: -1px;
+    bottom: -0.3vw;
     transition: 0.3s;
-    cursor: pointer;
 }
 .second-header li a:hover::after{
     width: 100%;
-    
 }
 #active{
     color: #ff4704;
@@ -188,6 +189,261 @@ header{
 }
 
 .A_letter .A{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.B_letter{
+    padding-left: 140px;
+}
+
+.B_letter .B{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.C_letter{
+    padding-left: 140px;
+}
+
+.C_letter .C{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.D_letter{
+    padding-left: 140px;
+}
+
+.D_letter .D{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.D_letter{
+    padding-left: 140px;
+}
+
+.E_letter .E{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.E_letter{
+    padding-left: 140px;
+}
+
+.E_letter .E{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.F_letter{
+    padding-left: 140px;
+}
+
+.F_letter .F{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.G_letter{
+    padding-left: 140px;
+}
+
+.G_letter .G{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.H_letter{
+    padding-left: 140px;
+}
+
+.H_letter .H{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.I_letter{
+    padding-left: 140px;
+}
+
+.I_letter .I{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.J_letter{
+    padding-left: 140px;
+}
+
+.J_letter .J{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.K_letter{
+    padding-left: 140px;
+}
+
+.K_letter .K{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.L_letter{
+    padding-left: 140px;
+}
+
+.L_letter .L{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.M_letter{
+    padding-left: 140px;
+}
+
+.M_letter .M{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.N_letter{
+    padding-left: 140px;
+}
+
+.N_letter .N{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.O_letter{
+    padding-left: 140px;
+}
+
+.O_letter .O{
     margin-top: 50px;
     font-family: sans-serif;
     font-weight: bold;
