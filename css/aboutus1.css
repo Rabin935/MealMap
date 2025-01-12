@@ -124,7 +124,7 @@ header{
 .intro-pics{
     width: 300px;
     height: 200px;
-    background-image: url('aboutus/k1.jpg');
+    background-image: url('/aboutus/k1.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -132,7 +132,7 @@ header{
 .intro2-col1{
     width: 300px;
     height: 200px;
-    background-image: url('aboutus/k2.jpg');
+    background-image: url('/aboutus/k2.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -140,7 +140,7 @@ header{
 .intro3-col2{
     width: 300px;
     height: 200px;
-    background-image: url('aboutus/K3.jpg');
+    background-image: url('/aboutus/K3.jpg');
     background-size: cover;
     background-position: center;
 }
