@@ -147,7 +147,7 @@ header{
     font-size: 20px;
     padding: 4px;
     height: 90p;
-    width: 300px;
+    width: 600px;
 
 }
 
@@ -181,6 +181,7 @@ header{
     color: white;
     border: 1px solid #ff4704;
     background-color: #ff4704;
+    transition: 0.3s;
 
 }
 
@@ -444,6 +445,193 @@ header{
 }
 
 .O_letter .O{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.P_letter{
+    padding-left: 140px;
+}
+
+.P_letter .P{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.Q_letter{
+    padding-left: 140px;
+}
+
+.Q_letter .Q{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.R_letter{
+    padding-left: 140px;
+}
+
+.R_letter .R{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.S_letter{
+    padding-left: 140px;
+}
+
+.S_letter .S{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.T_letter{
+    padding-left: 140px;
+}
+
+.T_letter .T{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.U_letter{
+    padding-left: 140px;
+}
+
+.U_letter .U{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.V_letter{
+    padding-left: 140px;
+}
+
+.V_letter .V{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.W_letter{
+    padding-left: 140px;
+}
+
+.W_letter .W{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.X_letter{
+    padding-left: 140px;
+}
+
+.X_letter .X{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.Y_letter{
+    padding-left: 140px;
+}
+
+.Y_letter .Y{
+    margin-top: 50px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: white;
+    width: 60px;
+    height: 60px;
+
+    background-color: black;
+    padding-left: 20px;
+    padding-top: 14px;
+}
+.Z_letter{
+    padding-left: 140px;
+}
+
+.Z_letter .Z{
     margin-top: 50px;
     font-family: sans-serif;
     font-weight: bold;
