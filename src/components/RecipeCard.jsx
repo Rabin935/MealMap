@@ -1,126 +1,187 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Card,
-  CardMedia,
   CardContent,
+  CardMedia,
   Typography,
   Box,
+  IconButton,
   Chip,
+  useTheme,
+  Tooltip,
+  CircularProgress,
 } from '@mui/material';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import TimerIcon from '@mui/icons-material/Timer';
+import {
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+  AccessTime as AccessTimeIcon,
+  Restaurant as RestaurantIcon,
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { useRecipeContext } from '../contexts/RecipeContext';
+import { useAuth } from '../contexts/AuthContext';
 
-export const RecipeCard = ({ recipe, onClick }) => {
-  const [imageError, setImageError] = useState(false);
+const RecipeCard = ({ recipe }) => {
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { favorites, toggleFavorite } = useRecipeContext();
+  const { user } = useAuth();
+  const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
+  const isFavorite = favorites?.includes(recipe.id) || false;
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    
+    setIsTogglingFavorite(true);
+    try {
+      await toggleFavorite(recipe.id);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    } finally {
+      setIsTogglingFavorite(false);
+    }
+  };
 
   return (
     <Card
+      component={motion.div}
+      whileHover={{ y: -4 }}
       sx={{
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        position: 'relative',
+        cursor: 'pointer',
         borderRadius: 2,
         overflow: 'hidden',
-        boxShadow: 2,
-        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+        boxShadow: theme.shadows[2],
         '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: 6,
-          cursor: 'pointer'
-        }
+          boxShadow: theme.shadows[8],
+        },
       }}
-      onClick={onClick}
+      onClick={() => navigate(`/recipes/${recipe.id}`)}
     >
-      <Box 
-        sx={{ 
-          position: 'relative', 
-          paddingTop: '56.25%', /* 16:9 aspect ratio */
-          backgroundColor: 'grey.100'
+      <CardMedia
+        component="img"
+        height="200"
+        image={recipe.image || 'https://placehold.co/400x300/png?text=Recipe+Image'}
+        alt={recipe.title}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = 'https://placehold.co/400x300/png?text=Recipe+Image';
         }}
-      >
-        {!imageError ? (
-          <CardMedia
-            component="img"
-            image={recipe.image}
-            alt={recipe.title}
-            onError={() => setImageError(true)}
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover'
-            }}
-          />
-        ) : (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'grey.200'
-            }}
-          >
-            <RestaurantMenuIcon sx={{ fontSize: 60, color: 'grey.400' }} />
-          </Box>
-        )}
-        <Box
+        sx={{
+          objectFit: 'cover',
+          bgcolor: 'grey.100',
+        }}
+      />
+
+      <Tooltip title={user ? (isFavorite ? 'Remove from favorites' : 'Add to favorites') : 'Login to add favorites'}>
+        <IconButton
+          onClick={handleFavoriteClick}
+          disabled={isTogglingFavorite}
           sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'space-between',
-            p: 2,
-            background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%)',
+            top: 8,
+            right: 8,
+            bgcolor: theme.palette.mode === 'dark'
+              ? 'rgba(255, 255, 255, 0.15)'
+              : 'rgba(255, 255, 255, 0.9)',
+            boxShadow: theme.palette.mode === 'dark'
+              ? '0 2px 8px rgba(0,0,0,0.4)'
+              : 'none',
+            '&:hover': {
+              bgcolor: theme.palette.mode === 'dark'
+                ? 'rgba(255, 255, 255, 0.25)'
+                : 'rgba(255, 255, 255, 1)',
+            },
+            '&.Mui-disabled': {
+              bgcolor: theme.palette.mode === 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'rgba(255, 255, 255, 0.7)',
+            },
           }}
         >
-          <Chip
-            label={recipe.difficulty}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              color: 'primary.main',
-              fontWeight: 500,
-            }}
-          />
-          <Chip
-            label={recipe.category}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              color: 'secondary.main',
-              fontWeight: 500,
-            }}
-          />
-        </Box>
-      </Box>
+          {isTogglingFavorite ? (
+            <CircularProgress size={24} color="error" />
+          ) : isFavorite ? (
+            <FavoriteIcon sx={{ color: theme.palette.error.main }} />
+          ) : (
+            <FavoriteBorderIcon sx={{ 
+              color: theme.palette.mode === 'dark'
+                ? theme.palette.common.white
+                : theme.palette.grey[800]
+            }} />
+          )}
+        </IconButton>
+      </Tooltip>
+
       <CardContent sx={{ flexGrow: 1, p: 2 }}>
-        <Typography variant="h6" gutterBottom component="h3" sx={{ fontWeight: 600 }}>
+        <Typography
+          variant="h6"
+          component="h2"
+          gutterBottom
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            lineHeight: 1.2,
+            minHeight: '2.4em',
+          }}
+        >
           {recipe.title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            mb: 2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
           {recipe.description}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <TimerIcon fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary">
-              {recipe.time}
-            </Typography>
-          </Box>
-          <Typography variant="body2" color="text.secondary">
-            Serves {recipe.servings}
-          </Typography>
+
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+          <Chip
+            icon={<AccessTimeIcon />}
+            label={`${recipe.cookingTime} min`}
+            size="small"
+            variant="outlined"
+          />
+          <Chip
+            icon={<RestaurantIcon />}
+            label={recipe.difficulty}
+            size="small"
+            variant="outlined"
+          />
+        </Box>
+
+        <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+          {recipe.category && (
+            <Chip
+              label={recipe.category}
+              size="small"
+              color="primary"
+              sx={{ fontSize: '0.75rem' }}
+            />
+          )}
         </Box>
       </CardContent>
     </Card>
   );
-}; 
+};
+
+export default RecipeCard; 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -11,138 +11,40 @@ import {
   CardMedia,
   CardContent,
   Box,
-  InputAdornment,
   Paper,
-  Skeleton,
-  Chip,
+  useTheme,
+  alpha,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
-import LunchDiningIcon from '@mui/icons-material/LunchDining';
-import DinnerDiningIcon from '@mui/icons-material/DinnerDining';
-import CakeIcon from '@mui/icons-material/Cake';
-import EggIcon from '@mui/icons-material/Egg';
-import TimerIcon from '@mui/icons-material/Timer';
-import { featuredRecipes, latestRecipes, categories } from '../data/recipes';
-
-const RecipeCard = ({ recipe, onClick }) => {
-  const [imageError, setImageError] = useState(false);
-
-  return (
-    <Card
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        borderRadius: 2,
-        overflow: 'hidden',
-        boxShadow: 2,
-        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: 6,
-          cursor: 'pointer'
-        }
-      }}
-      onClick={onClick}
-    >
-      <Box 
-        sx={{ 
-          position: 'relative', 
-          paddingTop: '56.25%', /* 16:9 aspect ratio */
-          backgroundColor: 'grey.100'
-        }}
-      >
-        {!imageError ? (
-          <CardMedia
-            component="img"
-            image={recipe.image}
-            alt={recipe.title}
-            onError={() => setImageError(true)}
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover'
-            }}
-          />
-        ) : (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'grey.200'
-            }}
-          >
-            <RestaurantMenuIcon sx={{ fontSize: 60, color: 'grey.400' }} />
-          </Box>
-        )}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'space-between',
-            p: 2,
-            background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%)',
-          }}
-        >
-          <Chip
-            label={recipe.difficulty}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              color: 'primary.main',
-              fontWeight: 500,
-            }}
-          />
-          <Chip
-            label={recipe.category}
-            size="small"
-            sx={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              color: 'secondary.main',
-              fontWeight: 500,
-            }}
-          />
-        </Box>
-      </Box>
-      <CardContent sx={{ flexGrow: 1, p: 2 }}>
-        <Typography variant="h6" gutterBottom component="h3" sx={{ fontWeight: 600 }}>
-          {recipe.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          {recipe.description}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <TimerIcon fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary">
-              {recipe.time}
-            </Typography>
-          </Box>
-          <Typography variant="body2" color="text.secondary">
-            Serves {recipe.servings}
-          </Typography>
-        </Box>
-      </CardContent>
-    </Card>
-  );
-};
+import {
+  Search as SearchIcon,
+  Restaurant as RestaurantIcon,
+  Timer as TimerIcon,
+  LocalDining as LocalDiningIcon,
+  Whatshot as WhatshotIcon,
+  ArrowForward as ArrowForwardIcon,
+} from '@mui/icons-material';
+import { useRecipeContext } from '../contexts/RecipeContext';
 
 const HomePage = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
+  const { recipes } = useRecipeContext();
   const [searchQuery, setSearchQuery] = useState('');
+  const [featuredRecipes, setFeaturedRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (recipes && recipes.length > 0) {
+      // Get 6 random recipes
+      const randomRecipes = [...recipes]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 6);
+      setFeaturedRecipes(randomRecipes);
+    }
+    setLoading(false);
+  }, [recipes]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -151,19 +53,39 @@ const HomePage = () => {
     }
   };
 
+  const categories = [
+    { 
+      name: 'Quick Meals', 
+      icon: <TimerIcon sx={{ fontSize: 40 }} />, 
+      color: theme.palette.success.main,
+      description: 'Ready in 30 minutes or less'
+    },
+    { 
+      name: 'Healthy', 
+      icon: <LocalDiningIcon sx={{ fontSize: 40 }} />, 
+      color: theme.palette.info.main,
+      description: 'Nutritious and delicious options'
+    },
+    { 
+      name: 'Popular', 
+      icon: <WhatshotIcon sx={{ fontSize: 40 }} />, 
+      color: theme.palette.error.main,
+      description: 'Community favorites'
+    },
+  ];
+
   return (
-    <Box sx={{ minHeight: '100vh', width: '100%', bgcolor: 'background.default' }}>
+    <Box>
       {/* Hero Section */}
       <Box
         sx={{
+          background: theme.palette.mode === 'dark'
+            ? `linear-gradient(45deg, ${alpha(theme.palette.primary.dark, 0.9)}, ${alpha(theme.palette.secondary.dark, 0.9)})`
+            : `linear-gradient(45deg, ${alpha(theme.palette.primary.main, 0.25)}, ${alpha(theme.palette.secondary.main, 0.25)})`,
+          py: { xs: 8, md: 12 },
+          mb: 6,
+          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           position: 'relative',
-          color: 'white',
-          py: { xs: 6, md: 10 },
-          overflow: 'hidden',
-          width: '100%',
-          minHeight: '60vh',
-          display: 'flex',
-          alignItems: 'center',
           '&::before': {
             content: '""',
             position: 'absolute',
@@ -171,174 +93,372 @@ const HomePage = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: 'url(/images/hero-bg.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center 40%',
-            backgroundRepeat: 'no-repeat',
-            opacity: 0.85,
-            filter: 'brightness(0.75)',
-            zIndex: 0,
+            background: theme.palette.mode === 'dark'
+              ? 'rgba(0, 0, 0, 0.4)'
+              : 'rgba(255, 255, 255, 0.7)',
+            zIndex: 1,
           },
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'linear-gradient(169deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.3) 100%)',
-            zIndex: 1
-          }
         }}
       >
-        <Container maxWidth={false} sx={{ position: 'relative', zIndex: 2, width: '100%', px: { xs: 2, sm: 4, md: 6 } }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{ width: '100%' }}
-          >
-            <Typography
-              variant="h2"
-              component="h1"
-              align="center"
-              gutterBottom
-              sx={{
-                fontWeight: 800,
-                fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-                mb: 3,
-                background: 'linear-gradient(45deg, #FF6B6B 30%, #4ECDC4 90%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                textShadow: 'none',
-                position: 'relative',
-                display: 'inline-block',
-                width: '100%',
-                fontFamily: '"Playfair Display", serif',
-              }}
-            >
-              Discover Delicious Recipes
-            </Typography>
-            <Typography
-              variant="h5"
-              align="center"
-              sx={{
-                mb: 6,
-                mt: 3,
-                fontSize: { xs: '1rem', sm: '1.15rem', md: '1.35rem' },
-                fontWeight: 300,
-                color: 'rgba(255, 255, 255, 0.95)',
-                maxWidth: '700px',
-                mx: 'auto',
-                lineHeight: 1.8,
-                letterSpacing: '0.02em',
-                fontFamily: '"Inter", sans-serif',
-              }}
-            >
-              Find and share the best recipes from around the world
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSearch}
-              sx={{
-                maxWidth: 700,
-                width: '100%',
-                mx: 'auto',
-                position: 'relative',
-                zIndex: 3,
-              }}
-            >
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="Search for recipes..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: 'white', fontSize: '1.75rem' }} />
-                    </InputAdornment>
-                  ),
-                  sx: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Typography
+                  variant="h2"
+                  component="h1"
+                  sx={{
+                    fontWeight: 700,
+                    mb: 2,
+                    color: theme.palette.mode === 'dark'
+                      ? theme.palette.common.white
+                      : theme.palette.primary.dark,
+                    textShadow: theme.palette.mode === 'dark'
+                      ? '2px 2px 4px rgba(0,0,0,0.5)'
+                      : '1px 1px 2px rgba(0,0,0,0.15)',
+                    position: 'relative',
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      bottom: -8,
+                      left: 0,
+                      width: '60px',
+                      height: '4px',
+                      background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                      borderRadius: '2px',
+                    },
+                  }}
+                >
+                  Discover Amazing Recipes
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{ 
+                    mb: 4,
+                    color: theme.palette.mode === 'dark' 
+                      ? theme.palette.grey[300]
+                      : theme.palette.grey[800],
+                    fontWeight: 500,
+                    textShadow: theme.palette.mode === 'dark'
+                      ? '1px 1px 2px rgba(0,0,0,0.3)'
+                      : 'none',
+                  }}
+                >
+                  Find and share the best recipes from around the world
+                </Typography>
+                <Paper
+                  component="form"
+                  onSubmit={handleSearch}
+                  elevation={3}
+                  sx={{
+                    p: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    maxWidth: 500,
                     borderRadius: 3,
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
-                    height: 65,
-                    fontSize: '1.15rem',
-                    fontFamily: '"Inter", sans-serif',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    color: 'white',
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'transparent'
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                      border: '2px solid rgba(255,255,255,0.4)',
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                      border: '2px solid rgba(255,255,255,0.5)',
-                      transform: 'scale(1.02)',
-                      boxShadow: '0 12px 48px rgba(0,0,0,0.3)',
-                      transition: 'all 0.3s ease'
-                    },
-                    '& input': {
-                      color: 'white',
-                      '&::placeholder': {
-                        color: 'rgba(255, 255, 255, 0.8)',
-                        opacity: 1
-                      }
-                    }
-                  }
-                }}
-              />
-            </Box>
-          </motion.div>
+                  }}
+                >
+                  <TextField
+                    fullWidth
+                    placeholder="Search recipes..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        border: 'none',
+                        '& fieldset': { border: 'none' },
+                      },
+                    }}
+                  />
+                  <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+              </motion.div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Box
+                  component="img"
+                  src="https://images.unsplash.com/photo-1498837167922-ddd27525d352"
+                  alt="Cooking"
+                  sx={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: 4,
+                    boxShadow: theme.shadows[4],
+                  }}
+                />
+              </motion.div>
+            </Grid>
+          </Grid>
         </Container>
       </Box>
 
-      {/* Content Sections */}
-      <Container maxWidth={false} sx={{ width: '100%', px: { xs: 2, sm: 4, md: 6 }, py: { xs: 4, md: 8 } }}>
-        {/* Featured Recipes Section */}
+      {/* Categories Section */}
+      <Container maxWidth="lg" sx={{ mb: 8 }}>
         <Typography
           variant="h4"
-          component="h2"
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             mb: 4,
-            fontSize: { xs: '1.75rem', md: '2.25rem' }
+            textAlign: 'center',
+            color: theme.palette.text.primary,
           }}
         >
-          Featured Recipes
-        </Typography>
-        <Grid container spacing={3} sx={{ mb: 8 }}>
-          {featuredRecipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-              <RecipeCard recipe={recipe} onClick={() => navigate(`/recipe/${recipe.id}`)} />
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Latest Recipes Section */}
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{
-            fontWeight: 600,
-            mb: 4,
-            fontSize: { xs: '1.75rem', md: '2.25rem' }
-          }}
-        >
-          Latest Recipes
+          Explore Categories
         </Typography>
         <Grid container spacing={3}>
-          {latestRecipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-              <RecipeCard recipe={recipe} onClick={() => navigate(`/recipe/${recipe.id}`)} />
+          {categories.map((category, index) => (
+            <Grid item xs={12} md={4} key={category.name}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Paper
+                  elevation={2}
+                  sx={{
+                    p: 3,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                    border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      bgcolor: theme.palette.mode === 'dark'
+                        ? alpha(category.color, 0.1)
+                        : alpha(category.color, 0.15),
+                    },
+                    borderRadius: 4,
+                  }}
+                  onClick={() => navigate(`/recipes?category=${category.name.toLowerCase()}`)}
+                >
+                  <Box sx={{ color: category.color, mb: 2 }}>
+                    {category.icon}
+                  </Box>
+                  <Typography variant="h6" gutterBottom color="textPrimary">
+                    {category.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.mode === 'dark'
+                        ? theme.palette.text.secondary
+                        : theme.palette.text.primary,
+                      textAlign: 'center',
+                      fontWeight: 500
+                    }}
+                  >
+                    {category.description}
+                  </Typography>
+                </Paper>
+              </motion.div>
             </Grid>
           ))}
         </Grid>
+      </Container>
+
+      {/* Featured Recipes Section */}
+      <Box
+        sx={{
+          bgcolor: theme.palette.mode === 'dark'
+            ? alpha(theme.palette.primary.dark, 0.1)
+            : alpha(theme.palette.primary.main, 0.06),
+          py: 8,
+          borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 4,
+            }}
+          >
+            <Typography variant="h4" sx={{ 
+              fontWeight: 700,
+              color: theme.palette.text.primary
+            }}>
+              Featured Recipes
+            </Typography>
+            <Button
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => navigate('/recipes')}
+              sx={{ 
+                fontWeight: 600,
+                color: theme.palette.primary.main,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.1)
+                }
+              }}
+            >
+              View All
+            </Button>
+          </Box>
+          
+          {loading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : featuredRecipes.length > 0 ? (
+            <Grid container spacing={3}>
+              {featuredRecipes.map((recipe, index) => (
+                <Grid item xs={12} sm={6} md={4} key={recipe.id || index}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card
+                      sx={{
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s',
+                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                        '&:hover': {
+                          transform: 'translateY(-4px)',
+                          boxShadow: theme.shadows[8],
+                        },
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                        bgcolor: theme.palette.mode === 'dark'
+                          ? alpha(theme.palette.background.paper, 0.8)
+                          : theme.palette.background.paper,
+                      }}
+                      onClick={() => navigate(`/recipes/${recipe.id}`)}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={recipe.image || `https://source.unsplash.com/random/400x300/?${recipe.title.toLowerCase().replace(/\s+/g, '-')}`}
+                        alt={recipe.title}
+                        sx={{ objectFit: 'cover' }}
+                      />
+                      <CardContent sx={{ flexGrow: 1, p: 2 }}>
+                        <Typography
+                          variant="h6"
+                          gutterBottom
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            color: theme.palette.text.primary,
+                            fontWeight: 600
+                          }}
+                        >
+                          {recipe.title}
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <TimerIcon sx={{ 
+                            fontSize: 20, 
+                            color: theme.palette.mode === 'dark'
+                              ? theme.palette.text.secondary
+                              : theme.palette.text.primary
+                          }} />
+                          <Typography 
+                            variant="body2" 
+                            sx={{
+                              color: theme.palette.mode === 'dark'
+                                ? theme.palette.text.secondary
+                                : theme.palette.text.primary,
+                              fontWeight: 500
+                            }}
+                          >
+                            {recipe.cookingTime || 30} min
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Box sx={{ textAlign: 'center', py: 4 }}>
+              <Typography variant="h6" sx={{ 
+                color: theme.palette.mode === 'dark'
+                  ? theme.palette.text.secondary
+                  : theme.palette.text.primary
+              }}>
+                No recipes available
+              </Typography>
+            </Box>
+          )}
+        </Container>
+      </Box>
+
+      {/* Call to Action */}
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            p: { xs: 3, md: 6 },
+            textAlign: 'center',
+            borderRadius: 4,
+            background: theme.palette.mode === 'dark'
+              ? `linear-gradient(45deg, ${alpha(theme.palette.primary.dark, 0.9)}, ${alpha(theme.palette.secondary.dark, 0.9)})`
+              : `linear-gradient(45deg, ${alpha(theme.palette.primary.main, 0.1)}, ${alpha(theme.palette.secondary.main, 0.1)})`,
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+          }}
+        >
+          <RestaurantIcon sx={{ 
+            fontSize: 48, 
+            mb: 2, 
+            color: theme.palette.primary.main 
+          }} />
+          <Typography variant="h4" gutterBottom sx={{ 
+            fontWeight: 700,
+            color: theme.palette.text.primary
+          }}>
+            Ready to Start Cooking?
+          </Typography>
+          <Typography variant="h6" sx={{ 
+            mb: 4, 
+            color: theme.palette.mode === 'dark'
+              ? theme.palette.text.secondary
+              : theme.palette.text.primary,
+            fontWeight: 500
+          }}>
+            Join our community and share your favorite recipes
+          </Typography>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate('/register')}
+            sx={{
+              px: 4,
+              py: 1.5,
+              borderRadius: 3,
+              fontSize: '1.1rem',
+              textTransform: 'none',
+              background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              '&:hover': {
+                background: `linear-gradient(45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+              },
+            }}
+          >
+            Get Started
+          </Button>
+        </Paper>
       </Container>
     </Box>
   );

@@ -10,159 +10,149 @@ import {
   Link,
   Divider,
 } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import PinterestIcon from '@mui/icons-material/Pinterest';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import {
+  Facebook as FacebookIcon,
+  Twitter as TwitterIcon,
+  Instagram as InstagramIcon,
+  LinkedIn as LinkedInIcon,
+} from '@mui/icons-material';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <Box
+      component="footer"
       sx={{
         bgcolor: 'background.paper',
-        color: 'text.primary',
         py: 6,
-        borderTop: '1px solid',
+        borderTop: 1,
         borderColor: 'divider',
+        mt: 'auto',
       }}
     >
-      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6 } }}>
+      <Container maxWidth="lg">
         <Grid container spacing={4}>
-          {/* Brand and Description */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <RestaurantMenuIcon sx={{ fontSize: 32, mr: 1, color: 'primary.main' }} />
-              <Typography variant="h6" sx={{ fontWeight: 700, color: 'primary.main' }}>
-                Recipe Finder
-              </Typography>
-            </Box>
-            <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-              Discover and share delicious recipes from around the world. Join our community of food lovers and cooking enthusiasts.
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Recipe Finder
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <IconButton color="primary" aria-label="Facebook">
+            <Typography variant="body2" color="text.secondary">
+              Discover and share amazing recipes from around the world. Join our community
+              of food lovers and cooking enthusiasts.
+            </Typography>
+            <Box sx={{ mt: 2 }}>
+              <IconButton
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="primary"
+                size="small"
+              >
                 <FacebookIcon />
               </IconButton>
-              <IconButton color="primary" aria-label="Twitter">
+              <IconButton
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="primary"
+                size="small"
+              >
                 <TwitterIcon />
               </IconButton>
-              <IconButton color="primary" aria-label="Instagram">
+              <IconButton
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="primary"
+                size="small"
+              >
                 <InstagramIcon />
               </IconButton>
-              <IconButton color="primary" aria-label="Pinterest">
-                <PinterestIcon />
-              </IconButton>
-              <IconButton color="primary" aria-label="YouTube">
-                <YouTubeIcon />
+              <IconButton
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="primary"
+                size="small"
+              >
+                <LinkedInIcon />
               </IconButton>
             </Box>
           </Grid>
-
-          {/* Quick Links */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Quick Links
+          <Grid item xs={12} md={2}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Explore
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Link href="/recipes" color="inherit" underline="hover">
-                Browse Recipes
+              <Link href="/recipes" color="text.secondary" underline="hover">
+                All Recipes
               </Link>
-              <Link href="/categories" color="inherit" underline="hover">
+              <Link href="/categories" color="text.secondary" underline="hover">
                 Categories
               </Link>
-              <Link href="/popular" color="inherit" underline="hover">
-                Popular Recipes
-              </Link>
-              <Link href="/submit" color="inherit" underline="hover">
-                Submit Recipe
+              <Link href="/favorites" color="text.secondary" underline="hover">
+                Favorites
               </Link>
             </Box>
           </Grid>
-
-          {/* Categories */}
-          <Grid item xs={12} sm={6} md={2}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Categories
+          <Grid item xs={12} md={2}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Company
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Link href="/category/breakfast" color="inherit" underline="hover">
-                Breakfast
+              <Link href="/about" color="text.secondary" underline="hover">
+                About Us
               </Link>
-              <Link href="/category/lunch" color="inherit" underline="hover">
-                Lunch
+              <Link href="/contact" color="text.secondary" underline="hover">
+                Contact
               </Link>
-              <Link href="/category/dinner" color="inherit" underline="hover">
-                Dinner
-              </Link>
-              <Link href="/category/desserts" color="inherit" underline="hover">
-                Desserts
+              <Link href="/blog" color="text.secondary" underline="hover">
+                Blog
               </Link>
             </Box>
           </Grid>
-
-          {/* Newsletter */}
           <Grid item xs={12} md={4}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
               Newsletter
             </Typography>
-            <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>
-              Subscribe to our newsletter for new recipes, cooking tips, and exclusive content.
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Subscribe to our newsletter for the latest recipes and cooking tips.
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <TextField
-                size="small"
-                placeholder="Enter your email"
-                sx={{
-                  flexGrow: 1,
-                  '& .MuiOutlinedInput-root': {
-                    bgcolor: 'background.paper',
-                  },
-                }}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  px: 3,
-                  whiteSpace: 'nowrap',
-                  boxShadow: 2,
-                  '&:hover': {
-                    boxShadow: 4,
-                  },
-                }}
-              >
-                Subscribe
-              </Button>
-            </Box>
           </Grid>
         </Grid>
-
-        <Divider sx={{ my: 4 }} />
-
-        {/* Bottom Footer */}
         <Box
           sx={{
+            mt: 6,
+            pt: 3,
+            borderTop: 1,
+            borderColor: 'divider',
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'space-between',
             alignItems: 'center',
+            justifyContent: 'space-between',
             gap: 2,
           }}
         >
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Recipe Finder. All rights reserved.
+            © {currentYear} Recipe Finder. All rights reserved.
           </Typography>
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            <Link href="/privacy" color="inherit" underline="hover" variant="body2">
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 3,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            <Link href="/privacy" color="text.secondary" underline="hover">
               Privacy Policy
             </Link>
-            <Link href="/terms" color="inherit" underline="hover" variant="body2">
+            <Link href="/terms" color="text.secondary" underline="hover">
               Terms of Service
             </Link>
-            <Link href="/contact" color="inherit" underline="hover" variant="body2">
-              Contact Us
+            <Link href="/cookies" color="text.secondary" underline="hover">
+              Cookie Policy
             </Link>
           </Box>
         </Box>

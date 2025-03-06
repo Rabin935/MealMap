@@ -3,128 +3,248 @@ import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
+  Paper,
   Typography,
   TextField,
   Button,
-  Paper,
-  Divider,
-  Link,
+  InputAdornment,
+  IconButton,
+  Alert,
+  CircularProgress,
 } from '@mui/material';
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Login as LoginIcon,
+  RestaurantMenu as RecipeIcon,
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import { alpha } from '@mui/material/styles';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value.trim(),
+    }));
+    setError(''); // Clear error when user types
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
-    
+
     try {
-      await login({ email, password });
-      navigate('/');
+      const { email, password } = formData;
+      
+      // Basic validation
+      if (!email) {
+        throw new Error('Please enter your email');
+      }
+      if (!password) {
+        throw new Error('Please enter your password');
+      }
+
+      // Email format validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Please enter a valid email address');
+      }
+
+      const result = await login(email, password);
+      if (result.success) {
+        navigate('/recipes');
+      } else {
+        throw new Error(result.error || 'Invalid email or password');
+      }
     } catch (err) {
-      setError('Failed to login. Please check your credentials.');
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: { xs: 4, md: 8 } }}>
-      <Paper
-        elevation={3}
-        sx={{
-          p: { xs: 3, md: 4 },
-          borderRadius: 2,
-          bgcolor: 'background.paper',
-        }}
+    <Container maxWidth="sm" sx={{ py: 8 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          align="center"
-          gutterBottom
+        <Paper
+          elevation={3}
           sx={{
-            fontWeight: 700,
-            fontFamily: '"Playfair Display", serif',
-            mb: 3,
-          }}
-        >
-          Welcome Back
-        </Typography>
-
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{
+            p: 4,
             display: 'flex',
             flexDirection: 'column',
-            gap: 2,
+            alignItems: 'center',
+            borderRadius: 2,
           }}
         >
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!error}
-          />
-
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={!!error}
-            helperText={error}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            fullWidth
+          <Box
             sx={{
-              mt: 2,
-              height: 48,
-              fontSize: '1.1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              mb: 3,
             }}
           >
-            Login
-          </Button>
-        </Box>
-
-        <Divider sx={{ my: 4 }}>or</Divider>
-
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Don't have an account?{' '}
-            <Link
-              component="button"
-              variant="body1"
-              onClick={() => navigate('/register')}
-              sx={{ fontWeight: 500 }}
+            <RecipeIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+            <Typography
+              component="h1"
+              variant="h4"
+              sx={{ fontWeight: 700 }}
             >
-              Sign up
-            </Link>
+              Welcome Back
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            align="center"
+            sx={{ mb: 3 }}
+          >
+            Sign in to access your favorite recipes and create new ones
           </Typography>
 
-          <Link
-            component="button"
-            variant="body2"
-            onClick={() => navigate('/forgot-password')}
-            sx={{ color: 'text.secondary' }}
+          {error && (
+            <Alert 
+              severity="error" 
+              sx={{ 
+                width: '100%', 
+                mb: 3,
+                borderRadius: 2,
+              }}
+            >
+              {error}
+            </Alert>
+          )}
+
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ width: '100%' }}
           >
-            Forgot your password?
-          </Link>
-        </Box>
-      </Paper>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={formData.email}
+              onChange={handleChange}
+              disabled={loading}
+              error={!!error && error.includes('email')}
+              sx={{ borderRadius: 1 }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              autoComplete="current-password"
+              value={formData.password}
+              onChange={handleChange}
+              disabled={loading}
+              error={!!error && error.includes('password')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ borderRadius: 1 }}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              startIcon={loading ? <CircularProgress size={20} /> : <LoginIcon />}
+              disabled={loading}
+              sx={{ 
+                mt: 3, 
+                mb: 2,
+                py: 1.5,
+                borderRadius: 2,
+                background: (theme) => 
+                  `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                '&:hover': {
+                  background: (theme) => 
+                    `linear-gradient(45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+                },
+              }}
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </Button>
+          </Box>
+
+          <Typography variant="body2" color="text.secondary" align="center">
+            Don't have an account?{' '}
+            <Button
+              color="primary"
+              onClick={() => navigate('/register')}
+              disabled={loading}
+            >
+              Sign up
+            </Button>
+          </Typography>
+
+          {/* Demo Account Info */}
+          <Paper
+            elevation={0}
+            sx={{
+              mt: 4,
+              p: 2,
+              bgcolor: (theme) => 
+                theme.palette.mode === 'dark' 
+                  ? alpha(theme.palette.primary.main, 0.1)
+                  : alpha(theme.palette.primary.light, 0.1),
+              borderRadius: 2,
+              width: '100%',
+            }}
+          >
+            <Typography variant="subtitle2" color="primary" gutterBottom align="center">
+              Demo Accounts
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
+              <Typography variant="body2" color="text.secondary">
+                Admin: admin@example.com / any password
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                User: user@example.com / any password
+              </Typography>
+            </Box>
+          </Paper>
+        </Paper>
+      </motion.div>
     </Container>
   );
 };

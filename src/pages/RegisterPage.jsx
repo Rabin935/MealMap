@@ -10,8 +10,18 @@ import {
   Link,
   Box,
   Alert,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  PersonAdd as PersonAddIcon,
+  RestaurantMenu as RecipeIcon,
+} from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { alpha } from '@mui/material/styles';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -22,6 +32,8 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,8 +41,9 @@ const RegisterPage = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value.trim()
     }));
+    setError(''); // Clear error when user types
   };
 
   const validateForm = () => {
@@ -42,8 +55,9 @@ const RegisterPage = () => {
       setError('Email is required');
       return false;
     }
-    if (!formData.email.includes('@')) {
-      setError('Please enter a valid email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
       return false;
     }
     if (formData.password.length < 6) {
@@ -79,84 +93,186 @@ const RegisterPage = () => {
   };
 
   return (
-    <Container component="main" maxWidth="sm" className="mt-16">
+    <Container maxWidth="sm" sx={{ py: 8 }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Paper elevation={3} className="p-8">
-          <Typography variant="h4" component="h1" className="text-center mb-6">
-            Create Account
+        <Paper
+          elevation={3}
+          sx={{
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRadius: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              mb: 3,
+            }}
+          >
+            <RecipeIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+            <Typography
+              component="h1"
+              variant="h4"
+              sx={{ fontWeight: 700 }}
+            >
+              Create Account
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            align="center"
+            sx={{ mb: 3 }}
+          >
+            Join our community to save your favorite recipes and share your own
           </Typography>
 
           {error && (
-            <Alert severity="error" className="mb-4">
+            <Alert 
+              severity="error" 
+              sx={{ 
+                width: '100%', 
+                mb: 3,
+                borderRadius: 2,
+              }}
+            >
               {error}
             </Alert>
           )}
 
-          <Box component="form" onSubmit={handleSubmit} className="space-y-4">
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{ width: '100%' }}
+          >
             <TextField
+              margin="normal"
+              required
               fullWidth
-              label="Name"
+              id="name"
+              label="Full Name"
               name="name"
+              autoComplete="name"
+              autoFocus
               value={formData.name}
               onChange={handleChange}
-              required
+              disabled={loading}
+              error={!!error && error.includes('Name')}
+              sx={{ borderRadius: 1 }}
             />
-
             <TextField
+              margin="normal"
+              required
               fullWidth
-              label="Email"
+              id="email"
+              label="Email Address"
               name="email"
-              type="email"
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              disabled={loading}
+              error={!!error && error.includes('email')}
+              sx={{ borderRadius: 1 }}
             />
-
             <TextField
+              margin="normal"
+              required
               fullWidth
-              label="Password"
               name="password"
-              type="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              autoComplete="new-password"
               value={formData.password}
               onChange={handleChange}
-              required
+              disabled={loading}
+              error={!!error && error.includes('Password')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ borderRadius: 1 }}
             />
-
             <TextField
+              margin="normal"
+              required
               fullWidth
-              label="Confirm Password"
               name="confirmPassword"
-              type="password"
+              label="Confirm Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              id="confirmPassword"
+              autoComplete="new-password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              required
+              disabled={loading}
+              error={!!error && error.includes('Passwords do not match')}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ borderRadius: 1 }}
             />
-
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
               size="large"
+              startIcon={loading ? <CircularProgress size={20} /> : <PersonAddIcon />}
               disabled={loading}
-              className="mt-4"
+              sx={{ 
+                mt: 3, 
+                mb: 2,
+                py: 1.5,
+                borderRadius: 2,
+                background: (theme) => 
+                  `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                '&:hover': {
+                  background: (theme) => 
+                    `linear-gradient(45deg, ${theme.palette.primary.dark}, ${theme.palette.secondary.dark})`,
+                },
+              }}
             >
               {loading ? 'Creating Account...' : 'Sign Up'}
             </Button>
-
-            <Box className="text-center mt-4">
-              <Typography variant="body2">
-                Already have an account?{' '}
-                <Link component={RouterLink} to="/login" color="primary">
-                  Sign in
-                </Link>
-              </Typography>
-            </Box>
           </Box>
+
+          <Typography variant="body2" color="text.secondary" align="center">
+            Already have an account?{' '}
+            <Button
+              color="primary"
+              onClick={() => navigate('/login')}
+              disabled={loading}
+            >
+              Sign in
+            </Button>
+          </Typography>
         </Paper>
       </motion.div>
     </Container>

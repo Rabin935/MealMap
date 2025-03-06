@@ -1,40 +1,34 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { CssBaseline } from '@mui/material';
-import ThemeProvider from './contexts/ThemeContext';
-import AuthProvider, { useAuth } from './contexts/AuthContext';
-import MainLayout from './layouts/MainLayout';
-import HomePage from './pages/HomePage';
-import RecipePage from './pages/RecipePage';
-import RecipesPage from './pages/RecipesPage';
-import LoginPage from './pages/LoginPage';
-
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { RecipeProvider } from './contexts/RecipeContext';
+import Box from '@mui/material/Box';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import AppRoutes from './routes';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <CssBaseline />
-        <Router>
-          <MainLayout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/recipes" element={<RecipesPage />} />
-              <Route path="/recipe/:id" element={<RecipePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </MainLayout>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider>
+        <AuthProvider>
+          <RecipeProvider>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              minHeight: '100vh',
+              bgcolor: 'background.default'
+            }}>
+              <Navbar />
+              <Box component="main" sx={{ flexGrow: 1 }}>
+                <AppRoutes />
+              </Box>
+              <Footer />
+            </Box>
+          </RecipeProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </Router>
   );
 }
 

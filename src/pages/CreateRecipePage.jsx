@@ -13,152 +13,109 @@ import {
   IconButton,
   Box,
   MenuItem,
-  InputAdornment,
   Alert,
-  Chip,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@mui/material';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
   NavigateNext as NextIcon,
   NavigateBefore as BackIcon,
-  CloudUpload as UploadIcon,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
 const difficultyLevels = ['Easy', 'Medium', 'Hard'];
-const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Vegetarian'];
+const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack', 'Vegetarian', 'Vegan'];
 
 const CreateRecipePage = () => {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState('');
-  const [recipeData, setRecipeData] = useState({
+  const [recipe, setRecipe] = useState({
     title: '',
     description: '',
-    category: '',
-    prepTime: '',
-    cookTime: '',
-    servings: '',
-    difficulty: '',
     ingredients: [''],
     instructions: [''],
-    image: null,
-    notes: '',
+    time: '',
+    servings: '',
+    difficulty: '',
+    category: '',
+    image: '',
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRecipeData(prev => ({
+    setRecipe((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleIngredientChange = (index, value) => {
-    const newIngredients = [...recipeData.ingredients];
+    const newIngredients = [...recipe.ingredients];
     newIngredients[index] = value;
-    setRecipeData(prev => ({
+    setRecipe((prev) => ({
       ...prev,
-      ingredients: newIngredients
-    }));
-  };
-
-  const handleAddIngredient = () => {
-    setRecipeData(prev => ({
-      ...prev,
-      ingredients: [...prev.ingredients, '']
-    }));
-  };
-
-  const handleRemoveIngredient = (index) => {
-    const newIngredients = recipeData.ingredients.filter((_, i) => i !== index);
-    setRecipeData(prev => ({
-      ...prev,
-      ingredients: newIngredients
+      ingredients: newIngredients,
     }));
   };
 
   const handleInstructionChange = (index, value) => {
-    const newInstructions = [...recipeData.instructions];
+    const newInstructions = [...recipe.instructions];
     newInstructions[index] = value;
-    setRecipeData(prev => ({
+    setRecipe((prev) => ({
       ...prev,
-      instructions: newInstructions
+      instructions: newInstructions,
     }));
   };
 
-  const handleAddInstruction = () => {
-    setRecipeData(prev => ({
+  const addIngredient = () => {
+    setRecipe((prev) => ({
       ...prev,
-      instructions: [...prev.instructions, '']
+      ingredients: [...prev.ingredients, ''],
     }));
   };
 
-  const handleRemoveInstruction = (index) => {
-    const newInstructions = recipeData.instructions.filter((_, i) => i !== index);
-    setRecipeData(prev => ({
+  const removeIngredient = (index) => {
+    setRecipe((prev) => ({
       ...prev,
-      instructions: newInstructions
+      ingredients: prev.ingredients.filter((_, i) => i !== index),
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setRecipeData(prev => ({
-        ...prev,
-        image: file
-      }));
-    }
+  const addInstruction = () => {
+    setRecipe((prev) => ({
+      ...prev,
+      instructions: [...prev.instructions, ''],
+    }));
   };
 
-  const validateStep = () => {
-    switch (activeStep) {
-      case 0:
-        if (!recipeData.title || !recipeData.description || !recipeData.category) {
-          setError('Please fill in all required fields');
-          return false;
-        }
-        break;
-      case 1:
-        if (!recipeData.ingredients.every(ingredient => ingredient.trim())) {
-          setError('Please fill in all ingredients');
-          return false;
-        }
-        break;
-      case 2:
-        if (!recipeData.instructions.every(instruction => instruction.trim())) {
-          setError('Please fill in all instructions');
-          return false;
-        }
-        break;
-      default:
-        break;
-    }
-    setError('');
-    return true;
+  const removeInstruction = (index) => {
+    setRecipe((prev) => ({
+      ...prev,
+      instructions: prev.instructions.filter((_, i) => i !== index),
+    }));
   };
 
   const handleNext = () => {
-    if (validateStep()) {
-      setActiveStep(prev => prev + 1);
+    if (activeStep === steps.length - 1) {
+      handleSubmit();
+    } else {
+      setActiveStep((prev) => prev + 1);
     }
   };
 
   const handleBack = () => {
-    setActiveStep(prev => prev - 1);
+    setActiveStep((prev) => prev - 1);
   };
 
-  const handleSubmit = async () => {
-    if (!validateStep()) return;
-
-    try {
-      // TODO: Implement API call to save recipe
-      navigate('/recipes');
-    } catch (err) {
-      setError('Failed to create recipe');
-    }
+  const handleSubmit = () => {
+    // Here you would typically send the recipe data to your backend
+    console.log('Recipe submitted:', recipe);
+    // Navigate back to recipes page after submission
+    navigate('/recipes');
   };
 
   const steps = ['Basic Info', 'Ingredients', 'Instructions', 'Additional Details'];
@@ -178,7 +135,7 @@ const CreateRecipePage = () => {
                   fullWidth
                   label="Recipe Title"
                   name="title"
-                  value={recipeData.title}
+                  value={recipe.title}
                   onChange={handleChange}
                   required
                 />
@@ -188,7 +145,7 @@ const CreateRecipePage = () => {
                   fullWidth
                   label="Description"
                   name="description"
-                  value={recipeData.description}
+                  value={recipe.description}
                   onChange={handleChange}
                   multiline
                   rows={3}
@@ -196,71 +153,59 @@ const CreateRecipePage = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  select
-                  label="Category"
-                  name="category"
-                  value={recipeData.category}
-                  onChange={handleChange}
-                  required
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <FormControl fullWidth required>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    label="Category"
+                    name="category"
+                    value={recipe.category}
+                    onChange={handleChange}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel>Difficulty</InputLabel>
+                  <Select
+                    label="Difficulty"
+                    name="difficulty"
+                    value={recipe.difficulty}
+                    onChange={handleChange}
+                  >
+                    {difficultyLevels.map((level) => (
+                      <MenuItem key={level} value={level}>
+                        {level}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  select
-                  label="Difficulty"
-                  name="difficulty"
-                  value={recipeData.difficulty}
+                  label="Cooking Time"
+                  name="time"
+                  value={recipe.time}
                   onChange={handleChange}
+                  placeholder="e.g., 30 minutes"
                   required
-                >
-                  {difficultyLevels.map((level) => (
-                    <MenuItem key={level} value={level}>
-                      {level}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Prep Time"
-                  name="prepTime"
-                  value={recipeData.prepTime}
-                  onChange={handleChange}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">min</InputAdornment>,
-                  }}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  label="Cook Time"
-                  name="cookTime"
-                  value={recipeData.cookTime}
-                  onChange={handleChange}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">min</InputAdornment>,
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="Servings"
                   name="servings"
-                  value={recipeData.servings}
+                  value={recipe.servings}
                   onChange={handleChange}
                   type="number"
+                  required
                 />
               </Grid>
             </Grid>
@@ -277,8 +222,8 @@ const CreateRecipePage = () => {
             <Typography variant="subtitle1" gutterBottom>
               Add your ingredients one by one
             </Typography>
-            {recipeData.ingredients.map((ingredient, index) => (
-              <Box key={index} className="flex gap-2 mb-2">
+            {recipe.ingredients.map((ingredient, index) => (
+              <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <TextField
                   fullWidth
                   label={`Ingredient ${index + 1}`}
@@ -286,19 +231,21 @@ const CreateRecipePage = () => {
                   onChange={(e) => handleIngredientChange(index, e.target.value)}
                   required
                 />
-                <IconButton
-                  color="error"
-                  onClick={() => handleRemoveIngredient(index)}
-                  disabled={recipeData.ingredients.length === 1}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                {index > 0 && (
+                  <IconButton
+                    color="error"
+                    onClick={() => removeIngredient(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
               </Box>
             ))}
             <Button
               startIcon={<AddIcon />}
-              onClick={handleAddIngredient}
-              className="mt-2"
+              onClick={addIngredient}
+              variant="outlined"
+              sx={{ mt: 2 }}
             >
               Add Ingredient
             </Button>
@@ -315,29 +262,32 @@ const CreateRecipePage = () => {
             <Typography variant="subtitle1" gutterBottom>
               Add your instructions step by step
             </Typography>
-            {recipeData.instructions.map((instruction, index) => (
-              <Box key={index} className="flex gap-2 mb-2">
+            {recipe.instructions.map((instruction, index) => (
+              <Box key={index} sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <TextField
                   fullWidth
                   label={`Step ${index + 1}`}
                   value={instruction}
                   onChange={(e) => handleInstructionChange(index, e.target.value)}
                   multiline
+                  rows={2}
                   required
                 />
-                <IconButton
-                  color="error"
-                  onClick={() => handleRemoveInstruction(index)}
-                  disabled={recipeData.instructions.length === 1}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                {index > 0 && (
+                  <IconButton
+                    color="error"
+                    onClick={() => removeInstruction(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
               </Box>
             ))}
             <Button
               startIcon={<AddIcon />}
-              onClick={handleAddInstruction}
-              className="mt-2"
+              onClick={addInstruction}
+              variant="outlined"
+              sx={{ mt: 2 }}
             >
               Add Step
             </Button>
@@ -353,37 +303,13 @@ const CreateRecipePage = () => {
           >
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Button
-                  component="label"
-                  variant="outlined"
-                  startIcon={<UploadIcon />}
-                  fullWidth
-                  className="h-32"
-                >
-                  {recipeData.image ? 'Change Recipe Image' : 'Upload Recipe Image'}
-                  <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </Button>
-                {recipeData.image && (
-                  <Typography variant="body2" className="mt-2">
-                    Selected: {recipeData.image.name}
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Additional Notes"
-                  name="notes"
-                  value={recipeData.notes}
+                  label="Image URL"
+                  name="image"
+                  value={recipe.image}
                   onChange={handleChange}
-                  multiline
-                  rows={4}
-                  placeholder="Add any tips, variations, or additional information about your recipe..."
+                  placeholder="Enter image URL"
                 />
               </Grid>
             </Grid>
@@ -396,19 +322,19 @@ const CreateRecipePage = () => {
   };
 
   return (
-    <Container maxWidth="md" className="py-8">
-      <Paper className="p-6">
-        <Typography variant="h4" component="h1" className="mb-6">
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
           Create New Recipe
         </Typography>
 
         {error && (
-          <Alert severity="error" className="mb-4">
+          <Alert severity="error" sx={{ mb: 4 }}>
             {error}
           </Alert>
         )}
 
-        <Stepper activeStep={activeStep} className="mb-8">
+        <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -418,7 +344,7 @@ const CreateRecipePage = () => {
 
         {renderStepContent(activeStep)}
 
-        <Box className="flex justify-between mt-8">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button
             onClick={handleBack}
             startIcon={<BackIcon />}
@@ -428,9 +354,8 @@ const CreateRecipePage = () => {
           </Button>
           <Button
             variant="contained"
-            onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
+            onClick={handleNext}
             endIcon={activeStep === steps.length - 1 ? null : <NextIcon />}
-            color="primary"
           >
             {activeStep === steps.length - 1 ? 'Submit Recipe' : 'Next'}
           </Button>
